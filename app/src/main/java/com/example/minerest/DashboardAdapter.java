@@ -51,6 +51,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Myvi
             @Override
             public void onClick(View view) {
                 quant_int[0]++;
+                if(quant_int[0]<0)
+                    quant_int[0]=0;
                 holder.quantityTv.setText(String.valueOf(quant_int[0]));
                 Log.e("quantity", String.valueOf(quant_int[0]));
 
@@ -62,6 +64,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Myvi
             @Override
             public void onClick(View view) {
                 quant_int[0]--;
+                if(quant_int[0]<0)
+                    quant_int[0]=0;
                 holder.quantityTv.setText(String.valueOf(quant_int[0]));
                 Log.e("quantity", String.valueOf(quant_int[0]));
             }
