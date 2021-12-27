@@ -16,7 +16,7 @@
         android:textColor="@color/colorWhite"
         android:textSize="25sp"
         android:textAlignment="center"
-        android:text="MY RESTAURANT"
+        android:text="FOOD OVERFLOW"
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
