@@ -1,6 +1,7 @@
 package com.example.minerest;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +10,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyviewHolder> {
 
-   public final List<MenuItems> data;
+    List<dashboard_response_model> dashData;
 
-    public DashboardAdapter(List<MenuItems> data) {
-        this.data = data;
+    public DashboardAdapter(List<dashboard_response_model> dashData) {
+        this.dashData = dashData;
     }
 
     @NonNull
@@ -37,15 +41,25 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Myvi
         final int[] quant_int = {Integer.parseInt(quant)};
 
 
-        holder.itemnameTv.setText(data.get(position).getItemName());
-        holder.itemdescTv.setText(data.get(position).getItemDesc());
-        holder.itemtypeTv.setText(data.get(position).getItemType());
+        holder.itemnameTv.setText(dashData.get(position).getName());
+        holder.itemtypeTv.setText(dashData.get(position).getType());
 
+        //TODO: Image drive load
+       // Glide.with(holder.itemImg.getContext()).load(""+dashData.get(position).getUrl()).into(holder.itemImg);
 
-        holder.itemImg.setImageResource(data.get(position).getItemImg());
-        holder.itemtypeImg.setImageResource(data.get(position).getItemtypeImg());
+        if(dashData.get(position).getType().equals("veg")){
+            holder.itemtypeTv.setTextColor(Color.GREEN);
+            holder.itemTypeImg.setImageResource(R.drawable.leaf);
+        }else {
+            holder.itemtypeTv.setTextColor(Color.RED);
+            holder.itemTypeImg.setImageResource(R.drawable.leaf_red);
+        }
+
+        holder.rating.setText(dashData.get(position).getRating());
+        holder.itemImg.setImageResource(R.drawable.biryani);
+        holder.priceTv.setText("₹"+dashData.get(position).getPrice());
+
         holder.decImg.setImageResource(R.drawable.minus);
-
 
         holder.incImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,29 +84,31 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Myvi
                 Log.e("quantity", String.valueOf(quant_int[0]));
             }
         });
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return dashData == null ? 0 : dashData.size();
     }
 
     class MyviewHolder extends RecyclerView.ViewHolder{
         
-        ImageView itemImg, itemtypeImg,incImg,decImg;
-        TextView itemnameTv, itemdescTv, itemtypeTv, quantityTv;
+        ImageView itemImg,incImg,decImg,itemTypeImg;
+        TextView itemnameTv, itemtypeTv, quantityTv,priceTv,rating;
 
         public MyviewHolder(@NonNull View itemView) {
             super(itemView);
             itemImg = itemView.findViewById(R.id.itemImg);
-            itemtypeImg = itemView.findViewById(R.id.typeImg);
             incImg = itemView.findViewById(R.id.incBtn);
             decImg = itemView.findViewById(R.id.decBtn);
 
             itemnameTv = itemView.findViewById(R.id.row_nametv);
-            itemdescTv = itemView.findViewById(R.id.row_desctv);
             itemtypeTv = itemView.findViewById(R.id.typeDesc);
             quantityTv = itemView.findViewById(R.id.cartTv);
+            priceTv = itemView.findViewById(R.id.priceDash);
+            itemTypeImg=itemView.findViewById(R.id.itemTypeImg);
+            rating=itemView.findViewById(R.id.dashRating);
         }
     }
 }

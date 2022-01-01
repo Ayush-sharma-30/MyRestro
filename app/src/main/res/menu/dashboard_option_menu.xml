@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/logout"
+        android:title="Logout"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/cart_intent_option"
+        android:title="Cart"
+        android:icon="@drawable/cart" />
+
+    <item
+        android:id="@+id/bill_intent_option"
+        android:title="Total Bill"/>
+
+    <item
+        android:id="@+id/contactus_intent_option"
+        android:title="Contact us"/>
+</menu>

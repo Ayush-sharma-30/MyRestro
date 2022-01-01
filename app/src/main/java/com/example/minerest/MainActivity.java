@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     EditText username, password;
     TextView CreateNewAcc;
     Button loginBtn;
+    String token;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +70,22 @@ public class MainActivity extends AppCompatActivity {
                 login_response_model obj= response.body();
                 String result = obj.getMessage();
                 if(result.equals("true")){
+                    token = response.body().getToken();
                     SharedPreferences sp = getSharedPreferences("credentials",MODE_PRIVATE);
                     SharedPreferences.Editor editor=sp.edit();
                     editor.putString("username",username);
                     editor.putString("password",password);
+                    editor.putString("token",token);
                     editor.commit();
                     editor.apply();
-                    startActivity(new Intent(MainActivity.this,MenuDashboard.class));
+                    Intent dashIntent = new Intent(MainActivity.this,MenuDashboard.class);
+//                    Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+//                    System.out.println("***********************");
+//                    System.out.println(token);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("token",token);
+                    dashIntent.putExtras(bundle);
+                    startActivity(dashIntent);
                     finish();
                 }
                 if(result.equals("Error logging in")){
