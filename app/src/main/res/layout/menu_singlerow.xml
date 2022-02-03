@@ -13,40 +13,81 @@
         android:layout_height="wrap_content">
 
 
-        <ImageView
-            android:id="@+id/itemImg"
+        <androidx.cardview.widget.CardView
             android:layout_width="125dp"
             android:layout_height="125dp"
-            android:src="@drawable/biryani"
-            android:scaleType="centerCrop" />
+            app:cardCornerRadius="250dp"
+            app:cardBackgroundColor="@color/white">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="250dp"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/biryani"
+                    android:scaleType="centerCrop"
+                    android:id="@+id/itemImg"/>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/itemImg"-->
+<!--            android:layout_width="125dp"-->
+<!--            android:layout_height="125dp"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            android:src="@drawable/biryani"-->
+<!--            />-->
 
         <LinearLayout
             android:id="@+id/desc"
             android:layout_width="155dp"
             android:layout_height="125dp"
-            android:layout_toRightOf="@+id/itemImg"
+            android:layout_marginLeft="128dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/row_nametv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="20dp"
                 android:text="Biryani"
                 android:textColor="@color/black"
                 android:textSize="30sp"
                 android:textStyle="italic" />
-
+            <LinearLayout
+                android:layout_width="155dp"
+                android:layout_height="37dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/rating"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"/>
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:text="5"
+                    android:id="@+id/dashRating"
+                    android:textSize="16sp"
+                    android:layout_marginTop="5dp"/>
             <TextView
-                android:id="@+id/row_desctv"
-                android:layout_width="match_parent"
+                android:id="@+id/priceDash"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:text="The perfect blend of Indian spices!"
-                android:textSize="15sp" />
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:text="₹240"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -60,24 +101,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginLeft="15dp">
+                android:gravity="left">
 
                 <ImageView
-                    android:id="@+id/typeImg"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/leaf" />
-
+                    android:layout_width="10dp"
+                    android:id="@+id/itemTypeImg"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/leaf"/>
                 <TextView
                     android:id="@+id/typeDesc"
+                    android:layout_marginLeft="3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Veg"
                     android:textColor="#10A698"
-                    android:textSize="17dp" />
+                    android:textSize="11dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -85,34 +125,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginLeft="5dp">
 
-                <ImageView
-                    android:id="@+id/decBtn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/minus"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/cartTv"
-                    android:layout_width="27dp"
-                    android:layout_height="35dp"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/incBtn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/add"
-                    android:textColor="@color/black"
-                    android:textSize="25dp" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/cart"
+                    android:textSize="8dp"
+                    android:backgroundTint="#FBDE70"
+                    android:id="@+id/dashCartBtn"/>
 
             </LinearLayout>
 

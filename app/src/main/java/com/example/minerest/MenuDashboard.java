@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,28 +22,30 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MenuDashboard extends AppCompatActivity {
     RecyclerView rcv;
-    DashboardAdapter dashboardAdapter;
-    List<MenuItems> data;
     Button cartRevBtn;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_dashboard);
 
+        Bundle bundle = getIntent().getExtras();
+        token=bundle.getString("token");
 
         rcv = findViewById(R.id.recView);
 
-        data = new ArrayList<>();
-        datalist();
-
-        dashboardAdapter = new DashboardAdapter(data);
-        rcv.setAdapter(dashboardAdapter);
+        processdata(token);
 
         LinearLayoutManager llm = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         rcv.setLayoutManager(llm);
+
 
         cartRevBtn = findViewById(R.id.revbtndash);
 
@@ -49,23 +53,37 @@ public class MenuDashboard extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent cartIntent = new Intent(MenuDashboard.this, CartDashboard.class);
+                Bundle cartBundle= new Bundle();
+                cartBundle.putString("token",token);
+                cartIntent.putExtras(cartBundle);
                 startActivity(cartIntent);
+            }
+        });
+
+    }
+
+    public void processdata(String token) {
+        Call<List<dashboard_response_model>> call = apicontroller
+                                                    .getInstance()
+                                                    .getapi()
+                                                    .getdata(token);
+        call.enqueue(new Callback<List<dashboard_response_model>>() {
+            @Override
+            public void onResponse(Call<List<dashboard_response_model>> call, Response<List<dashboard_response_model>> response) {
+                List<dashboard_response_model> dashData= response.body();
+
+                DashboardAdapter dashboardAdapter = new DashboardAdapter(dashData,MenuDashboard.this);
+                rcv.setAdapter(dashboardAdapter);
+                dashboardAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<dashboard_response_model>> call, Throwable t) {
+                Toast.makeText(MenuDashboard.this, "There was some error fetching data. Please try again!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void datalist(){
-        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0));
-        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0));
-        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0));
-        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0));
-        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0));
-        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0));
-        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0));
-        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0));
-        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0));
-
-    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -82,11 +100,15 @@ public class MenuDashboard extends AppCompatActivity {
                 break;
 
             case R.id.cart_intent_option:
-                Toast.makeText(MenuDashboard.this,"Cart option selected",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MenuDashboard.this,CartDashboard.class));
                 break;
 
             case R.id.bill_intent_option:
-                Toast.makeText(MenuDashboard.this,"Bill option selected",Toast.LENGTH_SHORT).show();
+                Intent roIntent = new Intent(MenuDashboard.this, RecentOrders.class);
+                Bundle roBundle= new Bundle();
+                roBundle.putString("token",token);
+                roIntent.putExtras(roBundle);
+                startActivity(roIntent);
                 break;
 
             case R.id.contactus_intent_option:
@@ -102,4 +124,5 @@ public class MenuDashboard extends AppCompatActivity {
         menuInflater.inflate(R.menu.dashboard_option_menu,menu);
         return true;
     }
+
 }

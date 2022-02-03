@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="13dp"
         android:text="Create a New Acount"
-        android:textColor="#303F9F"
+        android:textColor="#E9AC45"
         android:textSize="25sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"/>

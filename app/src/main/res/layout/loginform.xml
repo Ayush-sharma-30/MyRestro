@@ -39,7 +39,7 @@
             android:layout_marginTop="10dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="#E9AC45"
             android:layout_gravity="center"
             android:text="Create a new Acount!"
             android:layout_width="wrap_content"

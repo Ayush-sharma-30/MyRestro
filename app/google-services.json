@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "639328390783",
+    "project_id": "minerest-457c3",
+    "storage_bucket": "minerest-457c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639328390783:android:e7ad9cba0b8f8841a8b94a",
+        "android_client_info": {
+          "package_name": "com.example.minerest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639328390783-rjv6tnc8ec909v2uanrd4a5f1hphu3r3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP31oBmYyRvXm39Dg1_2YxQj4oe8NMvzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "639328390783-rjv6tnc8ec909v2uanrd4a5f1hphu3r3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
