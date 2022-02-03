@@ -37,6 +37,8 @@ public class OtpAuth extends AppCompatActivity {
     String username;
     String useremail;
     String userpass;
+    LoadingDialog loadingDialog = new LoadingDialog(OtpAuth.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +67,6 @@ public class OtpAuth extends AppCompatActivity {
                 else{
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(otpid,submitotptv.getText().toString());
                     signInWithPhoneAuthCredential(credential);
-
                 }
             }
         });
@@ -104,10 +105,12 @@ public class OtpAuth extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        loadingDialog.startLoadingDialog();
                         if (task.isSuccessful()) {
                             getregister(username,useremail,userpass,phoneNumber);
                             }
                         else {
+                            loadingDialog.dismissDialog();
                             Toast.makeText(getApplicationContext(), "Oops, there was some error while signup!", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -134,10 +137,12 @@ public class OtpAuth extends AppCompatActivity {
                 if(result.equals("true")) {
                     Toast.makeText(OtpAuth.this,"You are registered!",Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(OtpAuth.this, MainActivity.class));
+                    loadingDialog.dismissDialog();
                     finish();
                 }else if(result.equals("false")){
                     Toast.makeText(OtpAuth.this,"Email/Phone number already exists!",Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(OtpAuth.this, MainActivity.class));
+                    loadingDialog.dismissDialog();
                     finish();
                 }
             }
@@ -146,6 +151,7 @@ public class OtpAuth extends AppCompatActivity {
             public void onFailure(Call<signup_response_model> call, Throwable t) {
                 Toast.makeText(OtpAuth.this,"Oops, there was some error while registering!",Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(OtpAuth.this,SignUp.class));
+                    loadingDialog.dismissDialog();
                     finish();
             }
         });

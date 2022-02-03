@@ -1,14 +1,16 @@
 package com.example.minerest;
 
 public class dashboard_response_model {
+    int id;
     String name;
     String type;
-    String price;
+    int price;
     String descrition;
     String url;
     String rating;
 
-    public dashboard_response_model(String name, String type, String price, String descrition, String url, String rating) {
+    public dashboard_response_model(int id,String name, String type, int price, String descrition, String url, String rating) {
+        this.id=id;
         this.name = name;
         this.type = type;
         this.price = price;
@@ -19,6 +21,10 @@ public class dashboard_response_model {
 
     public dashboard_response_model() {
     }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getName() { return name; }
 
@@ -34,11 +40,11 @@ public class dashboard_response_model {
         this.type = type;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

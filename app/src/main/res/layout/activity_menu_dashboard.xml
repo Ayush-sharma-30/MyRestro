@@ -22,6 +22,9 @@
         android:layout_gravity="bottom"
         android:id="@+id/revbtndash"
         android:text="Review your cart"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:backgroundTint="#FBDE70"
         android:textAllCaps="true" />
 
     </LinearLayout>

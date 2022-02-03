@@ -1,7 +1,11 @@
 package com.example.minerest;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,21 +13,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyviewHolder> {
 
     List<dashboard_response_model> dashData;
+    Context context;
 
-    public DashboardAdapter(List<dashboard_response_model> dashData) {
+    public DashboardAdapter(List<dashboard_response_model> dashData, Context context) {
         this.dashData = dashData;
+        this.context=context;
     }
 
     @NonNull
@@ -35,17 +50,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Myvi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyviewHolder holder,int position) {
-
-        String quant= holder.quantityTv.getText().toString();
-        final int[] quant_int = {Integer.parseInt(quant)};
-
+    public void onBindViewHolder(@NonNull MyviewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.itemnameTv.setText(dashData.get(position).getName());
         holder.itemtypeTv.setText(dashData.get(position).getType());
 
-        //TODO: Image drive load
-       // Glide.with(holder.itemImg.getContext()).load(""+dashData.get(position).getUrl()).into(holder.itemImg);
+        if(dashData.get(position).getType().equals("veg"))
+        holder.itemImg.setImageResource(R.drawable.vegmenuitem);
+        else
+            holder.itemImg.setImageResource(R.drawable.nonvegmenuitem);
+
+
+      //  Picasso.get().load(dashData.get(position).getUrl()).placeholder(R.drawable.ic_launcher_background).fit().into(holder.itemImg);
 
         if(dashData.get(position).getType().equals("veg")){
             holder.itemtypeTv.setTextColor(Color.GREEN);
@@ -56,35 +72,30 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Myvi
         }
 
         holder.rating.setText(dashData.get(position).getRating());
-        holder.itemImg.setImageResource(R.drawable.biryani);
         holder.priceTv.setText("₹"+dashData.get(position).getPrice());
 
-        holder.decImg.setImageResource(R.drawable.minus);
-
-        holder.incImg.setOnClickListener(new View.OnClickListener() {
+        holder.addCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                quant_int[0]++;
-                if(quant_int[0]<0)
-                    quant_int[0]=0;
-                holder.quantityTv.setText(String.valueOf(quant_int[0]));
-                Log.e("quantity", String.valueOf(quant_int[0]));
-
+                AppDatabase db= Room.databaseBuilder(context,AppDatabase.class,"cart_db").allowMainThreadQueries().build();
+                MenuItemsDao productDao=db.MenuItemsDao();
+                Boolean check=productDao.is_exist(dashData.get(position).getId());
+                if(check==false)
+                {
+                    int pid=dashData.get(position).getId();
+                    String pname=dashData.get(position).getName();
+                    int price=dashData.get(position).getPrice();
+                    int qnt=1;
+                    String type = dashData.get(position).getType();
+                    productDao.insertrecord(new MenuItemsTable(pid,pname,type,price,qnt));
+                    Toast.makeText(context,"Added to cart!",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(context,"Product already in cart!",Toast.LENGTH_SHORT).show();
+                }
             }
         });
-        System.out.println(quant_int[0]);
-        holder.decImg.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                quant_int[0]--;
-                if(quant_int[0]<0)
-                    quant_int[0]=0;
-                holder.quantityTv.setText(String.valueOf(quant_int[0]));
-                Log.e("quantity", String.valueOf(quant_int[0]));
-            }
-        });
-        notifyDataSetChanged();
     }
 
     @Override
@@ -94,18 +105,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Myvi
 
     class MyviewHolder extends RecyclerView.ViewHolder{
         
-        ImageView itemImg,incImg,decImg,itemTypeImg;
-        TextView itemnameTv, itemtypeTv, quantityTv,priceTv,rating;
+        ImageView itemImg,itemTypeImg;
+        TextView itemnameTv, itemtypeTv,priceTv,rating;
+        Button addCartBtn;
 
         public MyviewHolder(@NonNull View itemView) {
             super(itemView);
             itemImg = itemView.findViewById(R.id.itemImg);
-            incImg = itemView.findViewById(R.id.incBtn);
-            decImg = itemView.findViewById(R.id.decBtn);
+
+            addCartBtn=itemView.findViewById(R.id.dashCartBtn);
 
             itemnameTv = itemView.findViewById(R.id.row_nametv);
             itemtypeTv = itemView.findViewById(R.id.typeDesc);
-            quantityTv = itemView.findViewById(R.id.cartTv);
             priceTv = itemView.findViewById(R.id.priceDash);
             itemTypeImg=itemView.findViewById(R.id.itemTypeImg);
             rating=itemView.findViewById(R.id.dashRating);

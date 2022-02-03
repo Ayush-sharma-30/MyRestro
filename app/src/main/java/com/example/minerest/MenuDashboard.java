@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,10 +28,8 @@ import retrofit2.Response;
 
 public class MenuDashboard extends AppCompatActivity {
     RecyclerView rcv;
-    List<MenuItems> data;
     Button cartRevBtn;
     String token;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,19 +39,13 @@ public class MenuDashboard extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         token=bundle.getString("token");
 
-
-
-
         rcv = findViewById(R.id.recView);
 
-//        data = new ArrayList<>();
-//        datalist();
-
+        processdata(token);
 
         LinearLayoutManager llm = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         rcv.setLayoutManager(llm);
 
-        processdata(token);
 
         cartRevBtn = findViewById(R.id.revbtndash);
 
@@ -60,9 +53,13 @@ public class MenuDashboard extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent cartIntent = new Intent(MenuDashboard.this, CartDashboard.class);
+                Bundle cartBundle= new Bundle();
+                cartBundle.putString("token",token);
+                cartIntent.putExtras(cartBundle);
                 startActivity(cartIntent);
             }
         });
+
     }
 
     public void processdata(String token) {
@@ -75,8 +72,9 @@ public class MenuDashboard extends AppCompatActivity {
             public void onResponse(Call<List<dashboard_response_model>> call, Response<List<dashboard_response_model>> response) {
                 List<dashboard_response_model> dashData= response.body();
 
-                DashboardAdapter dashboardAdapter = new DashboardAdapter(dashData);
+                DashboardAdapter dashboardAdapter = new DashboardAdapter(dashData,MenuDashboard.this);
                 rcv.setAdapter(dashboardAdapter);
+                dashboardAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -86,18 +84,6 @@ public class MenuDashboard extends AppCompatActivity {
         });
     }
 
-//    private void datalist(){
-//        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0,240));
-//        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0,240));
-//        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0,240));
-//        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0,240));
-//        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0,240));
-//        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0,240));
-//        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0,240));
-//        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0,240));
-//        data.add(new MenuItems("Biryani","A perfect blend of Indian Spices","Veg",R.drawable.biryani,R.drawable.leaf,0,240));
-//
-//    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -114,11 +100,15 @@ public class MenuDashboard extends AppCompatActivity {
                 break;
 
             case R.id.cart_intent_option:
-                Toast.makeText(MenuDashboard.this,"Cart option selected",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MenuDashboard.this,CartDashboard.class));
                 break;
 
             case R.id.bill_intent_option:
-                Toast.makeText(MenuDashboard.this,"Bill option selected",Toast.LENGTH_SHORT).show();
+                Intent roIntent = new Intent(MenuDashboard.this, RecentOrders.class);
+                Bundle roBundle= new Bundle();
+                roBundle.putString("token",token);
+                roIntent.putExtras(roBundle);
+                startActivity(roIntent);
                 break;
 
             case R.id.contactus_intent_option:

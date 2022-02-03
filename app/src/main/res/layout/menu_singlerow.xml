@@ -13,18 +13,42 @@
         android:layout_height="wrap_content">
 
 
-        <ImageView
-            android:id="@+id/itemImg"
+        <androidx.cardview.widget.CardView
             android:layout_width="125dp"
             android:layout_height="125dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/biryani" />
+            app:cardCornerRadius="250dp"
+            app:cardBackgroundColor="@color/white">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="250dp"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/biryani"
+                    android:scaleType="centerCrop"
+                    android:id="@+id/itemImg"/>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/itemImg"-->
+<!--            android:layout_width="125dp"-->
+<!--            android:layout_height="125dp"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            android:src="@drawable/biryani"-->
+<!--            />-->
 
         <LinearLayout
             android:id="@+id/desc"
             android:layout_width="155dp"
             android:layout_height="125dp"
-            android:layout_toRightOf="@+id/itemImg"
+            android:layout_marginLeft="128dp"
             android:orientation="vertical">
 
             <TextView
@@ -101,34 +125,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginLeft="5dp">
 
-                <ImageView
-                    android:id="@+id/decBtn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/minus"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/cartTv"
-                    android:layout_width="27dp"
-                    android:layout_height="35dp"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/incBtn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/add"
-                    android:textColor="@color/black"
-                    android:textSize="25dp" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/cart"
+                    android:textSize="8dp"
+                    android:backgroundTint="#FBDE70"
+                    android:id="@+id/dashCartBtn"/>
 
             </LinearLayout>
 

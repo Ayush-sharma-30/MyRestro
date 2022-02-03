@@ -16,6 +16,8 @@ public class SignUp extends AppCompatActivity {
     Button getotpbtn;
     EditText phoneNum,name,email,pass;
     CountryCodePicker ccp;
+    LoadingDialog loadingDialog=new LoadingDialog(SignUp.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +53,8 @@ public class SignUp extends AppCompatActivity {
                 if(phoneNum.getText().toString().trim().length() < 10) {
                     phoneNum.setError("Please enter a valid phone number.");
                 } else if(name.getText().toString().trim().length() > 0 && email.getText().toString().trim().length() > 0 && pass.getText().toString().trim().length() > 0 && phoneNum.getText().toString().trim().length() == 11) {
-                        Intent otpIntent = new Intent(SignUp.this, OtpAuth.class);
+                    loadingDialog.startLoadingDialog();
+                    Intent otpIntent = new Intent(SignUp.this, OtpAuth.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("mobile", ccp.getFullNumberWithPlus().replace(" ", ""));
                         bundle.putString("name", name.getText().toString());
@@ -59,7 +62,7 @@ public class SignUp extends AppCompatActivity {
                         bundle.putString("pass", pass.getText().toString());
                         otpIntent.putExtras(bundle);
                         startActivity(otpIntent);
-                        finish();
+                        loadingDialog.dismissDialog();
                     }
                 }
         });

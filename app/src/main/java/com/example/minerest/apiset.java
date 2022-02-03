@@ -5,6 +5,7 @@ import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -33,4 +34,16 @@ public interface apiset {
 
     @GET("foodItem")
     Call<List<dashboard_response_model>> getdata(@Query("token") String token);
+
+    @POST("https://restaurant-app-devops.herokuapp.com/order/new")
+    Call<FooditemDTO> getorders(
+           @Query("token") String token,
+//           @Field("name") String name,
+//           @Field("quantity") String quantity,
+//           @Field("price") String price
+           @Body CreateOrderDTO createOrderDTO
+    );
+
+    @GET("order")
+    Call<RO_response_model> getorderData(@Query("token") String token);
 }

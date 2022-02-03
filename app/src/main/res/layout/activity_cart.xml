@@ -1,51 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CartDashboard">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:id="@+id/recViewCart"/>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="73dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="590dp"
+        android:id="@+id/headerpanel"
+        android:layout_height="50dp"
+        android:background="#E9AC45"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
-
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="Total cart price:                ₹"
-            android:textAllCaps="true"
-            android:textSize="20dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:textStyle="bold"/>
-
+            android:layout_marginLeft="55dp"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:text="Product"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
-            android:text="360"
-            android:textAllCaps="true"
-            android:textSize="25dp"
-            android:layout_gravity="center"
-            android:textStyle="bold"/>
-
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:text="Price"/>
+        <TextView
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:text="Qnt"/>
     </LinearLayout>
 
-    <Button
+    <ScrollView
+        android:id="@+id/scroller"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_below="@+id/headerpanel">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/InnerRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_gravity="bottom"
-        android:id="@+id/orderbtnCart"
-        android:text="Place your order"
-        android:textAllCaps="true" />
+        android:layout_alignParentBottom="true"
+        android:background="#FBDE70"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <TextView
+            android:id="@+id/rateview"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:textStyle="bold"
+            android:text="Total Amount : INR 600"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/checkout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/white"
+            android:padding="10dp"
+            android:text="Checkout"
+            android:textColor="#000" />
+    </LinearLayout>
+
+</RelativeLayout>
